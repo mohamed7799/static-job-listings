@@ -20,6 +20,7 @@ $Very-Dark-Grayish-Cyan: hsl(180, 14%, 20%);
 body {
   min-height: 100vh;
   font-family: "Spartan", sans-serif;
+  background-color: $Light-Grayish-Cyan-background;
 }
 //general
 
@@ -60,7 +61,6 @@ header {
 
 main {
   padding: 4rem 2rem;
-  background-color: $Light-Grayish-Cyan-background;
 }
 
 //search
@@ -79,6 +79,10 @@ main {
   & .category {
     padding: 0;
     overflow: hidden;
+    &:hover {
+      color: $Desaturated-Dark-Cyan;
+      background-color: #d6edef;
+    }
   }
 }
 
@@ -96,6 +100,10 @@ main {
     color: $Light-Grayish-Cyan;
     align-self: stretch;
     padding: 0rem 0.8rem;
+    transition: all 0.3s;
+    &:hover {
+      background-color: $Very-Dark-Grayish-Cyan;
+    }
   }
 }
 
@@ -143,6 +151,11 @@ main {
 
 .job-info__job-title {
   margin: 0.8rem 0rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  &:hover {
+    color: $Desaturated-Dark-Cyan;
+  }
 }
 
 .highlight {
@@ -154,7 +167,7 @@ main {
   text-transform: uppercase;
 }
 .highlight-card {
-  border-left: 4px solid $Desaturated-Dark-Cyan;
+  border-left: 6px solid $Desaturated-Dark-Cyan;
 }
 
 .new {
@@ -188,6 +201,11 @@ hr {
   font-weight: bold;
   padding: 0.3rem 0.8rem;
   border-radius: 5px;
+  transition: all 0.3s;
+  &:hover {
+    background-color: $Desaturated-Dark-Cyan;
+    color: $Light-Grayish-Cyan;
+  }
 }
 
 //media query

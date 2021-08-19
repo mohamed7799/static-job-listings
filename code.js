@@ -4,8 +4,7 @@
 let check = (item, _class) => item.classList.contains(_class);
 let add = (item, _class) => item.classList.add(_class);
 let remove = (item, _class) => item.classList.remove(_class);
-let toggle = (item, _class) => check(item, _class) ? remove(item, _class) : add(item, _class);
-let buildJobList = (arr) => {
+let buildMainJobList = (arr) => {
     document.querySelector(".jobs").innerHTML =
         ` ${arr.map(item =>
             `<li class="job card ${item.featured ? "highlight-card" : ""}">
@@ -28,45 +27,88 @@ let buildJobList = (arr) => {
             </li>`).join("")}`
 }
 
-let buildSearchList = (arr) => {
-
-    document.querySelector(".search").innerHTML = `${arr.map(item => {
-        return `<li class="search-item category">
+let buildSearchItemsNamesList = (arr) => {
+    if (arr.length === 0) {
+        document.querySelector(".search").innerHTML = ``;
+    }
+    else {
+        document.querySelector(".search").innerHTML = `${arr.map(item => {
+            return `<li class="search-item category">
                     <p>${item}</p>
                     <i class="fas fa-times"></i>
                 </li>`
-    }).join("")}`
+        }).join("")}`
+    }
+
+}
+
+let clearSearch = () => {
+    add(searchBox, "hidden");
+    searchItemsFouned = [];
+    searchItemsNames = [];
+    myData = JSON.parse(data);
+    buildSearchItemsNamesList(searchItemsNames);
+    buildMainJobList(myData);
 }
 
 //dom elemnts
 let searchBox = document.getElementById("search-box-js");
 let searchClear = document.getElementById("search-btn-js");
-let categoreis = document.querySelector(".jobs");
-
 //variables
 let myData = JSON.parse(data);
-let searchItems = [];
-
+let searchItemsFouned = [];
+let searchItemsNames = [];
 //main
 
-buildJobList(myData);
+buildMainJobList(myData);
 
 //event listners
 
-categoreis.addEventListener("click", (e) => {
+window.addEventListener("click", (e) => {
     if (check(e.target, "category")) {
         remove(searchBox, "hidden");
-        if (!searchItems.includes(e.target.textContent)) {
-            searchItems.push(e.target.textContent);
-            buildSearchList(searchItems);
+        if (!searchItemsNames.includes(e.target.textContent)) {
+            myData.forEach(element => {
+                // for role and level categories
+                if (Object.values(element).includes(e.target.textContent)) {
+                    searchItemsFouned.push(element);
+                }
+                element.languages.forEach((item) => {
+                    if (item.includes(e.target.textContent)) {
+                        searchItemsFouned.push(element);
+                    }
+                })
+                element.tools.forEach((item) => {
+
+                    if (item.includes(e.target.textContent)) {
+                        searchItemsFouned.push(element);
+                    }
+                })
+            });
+            searchItemsNames.push(e.target.textContent);
+            buildSearchItemsNamesList(searchItemsNames);
+            buildMainJobList(searchItemsFouned);
+            myData = [...searchItemsFouned];
+            searchItemsFouned = [];
+            console.log(myData)
+        }
+    }
+    else if (check(e.target, "fa-times")) {
+        let deletedItem = e.target.previousElementSibling.textContent;
+        searchItemsNames.splice(searchItemsNames.indexOf(deletedItem), 1);
+        buildSearchItemsNamesList(searchItemsNames);
+        if (searchItemsNames.length === 0) {
+            clearSearch()
         }
     }
 })
 
 searchClear.addEventListener("click", () => {
-    add(searchBox, "hidden");
-    searchItems = [];
-    buildJobList(myData);
+    clearSearch()
 })
+
+
+
+
 
 
